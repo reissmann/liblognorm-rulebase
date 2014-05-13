@@ -3,10 +3,10 @@
 #
 # This file is part of the liblognorm-rulebase project
 #
-# Redistribution and use in source and binary forms, with or without 
+# Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions are met:
 #
-# * Redistributions of source code must retain the above copyright notice, 
+# * Redistributions of source code must retain the above copyright notice,
 #   this list of conditions and the following disclaimer.
 # * Redistributions in binary form must reproduce the above copyright notice,
 #   this list of conditions and the following disclaimer in the documentation
@@ -17,7 +17,7 @@
 #
 # THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
 # AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-# IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE 
+# IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
 # ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
 # LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
 # CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
@@ -29,7 +29,19 @@
 
 prefix=
 
+# openssh authentication success
+#
+# message format:
+#   May 13 15:59:24 localhost sshd[3043]: Accepted publickey for root from 127.0.0.1 port 54158 ssh2
+#   May 13 15:59:24 localhost sshd[3043]: Accepted keyboard-interactive/pam for root from 127.0.0.1 port ssh2
+#   May 13 15:59:24 localhost sshd[3043]: Accepted password for for root from 127.0.0.1 port 54158 ssh2
 rule=: Accepted %auth-method:word% for %user:word% from %ip:ipv4% port %port:number% %protocol:word%
+
+# openssh authentication failure
+#
+# message format:
+#   May 13 15:59:24 localhost sshd[3043]: Falied password for root from 127.0.0.1 port 54158 ssh2
+#   May 13 15:59:24 localhost sshd[3043]: Falied password for invalid user foobar from 127.0.0.1 port 54158 ssh2
 rule=: Failed %auth-method:word% for %username:word% from %src-ip:ipv4% port %src-port:number% %protocol:word%
 rule=: Failed %auth-method:word% for invalid user %username:word% from %src-ip:ipv4% port %src-port:number% %protocol:word%
 
