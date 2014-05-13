@@ -33,4 +33,4 @@ prefix=
 #
 # message format:
 #   Oct 13 17:56:42 localhost kernel: Killed process 5458 (apache2) total-vm:274536kB, anon-rss:17224kB, file-rss:0kB
-rule=: Killed process %process-id:number% (%process-name:word%) total-vm:%total-vm:number%kB, anon-rss:%anon-rss:number%kB, file-rss:%file-rss:number%kB
+rule=: Killed process %process-id:number% (%process-name:char-to:\x29%) total-vm:%total-vm:number%kB, anon-rss:%anon-rss:number%kB, file-rss:%file-rss:number%kB
