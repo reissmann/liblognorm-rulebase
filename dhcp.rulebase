@@ -1,0 +1,58 @@
+# Copyright (c) 2014, Sven Reissmann <sven@0x80.io>
+# All rights reserved.
+#
+# This file is part of the liblognorm-rulebase project
+#
+# Redistribution and use in source and binary forms, with or without
+# modification, are permitted provided that the following conditions are met:
+#
+# * Redistributions of source code must retain the above copyright notice,
+#   this list of conditions and the following disclaimer.
+# * Redistributions in binary form must reproduce the above copyright notice,
+#   this list of conditions and the following disclaimer in the documentation
+#   and/or other materials provided with the distribution.
+# * Neither the name of the nor the names of its contributors may be used to
+#   endorse or promote products derived from this software without specific
+#   prior written permission.
+#
+# THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+# AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+# IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+# ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
+# LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+# CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+# SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+# INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+# CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+# ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+# POSSIBILITY OF SUCH DAMAGE.
+
+prefix=
+
+# 
+#
+# message format:
+#   DHCPDISCOVER, DHCPREQUEST and DHCPOFFER messages end with a space character 
+#   Oct 13 17:56:42 localhost dnsmasq-dhcp[8808]: DHCPDISCOVER(virbr0) 52:54:00:b0:50:90
+#   Oct 13 17:56:42 localhost dnsmasq-dhcp[8808]: DHCPOFFER(virbr0) 192.168.122.208 52:54:00:b0:50:90 
+#   Oct 13 17:56:42 localhost dnsmasq-dhcp[8808]: DHCPREQUEST(virbr0) 192.168.122.208 52:54:00:b0:50:90 
+#   Oct 13 17:56:42 localhost dnsmasq-dhcp[8808]: DHCPACK(virbr0) 192.168.122.208 52:54:00:b0:50:90 ubuntu
+rule=: %req-type:char-to:(%(%src-if:char-to:)%) %src-mac:word% 
+rule=: %req-type:char-to:(%(%src-if:char-to:)%) %src-ip:ipv4% %src-mac:word% 
+rule=: %req-type:char-to:(%(%src-if:char-to:)%) %src-ip:ipv4% %src-mac:word% %src-hostname:word%
+
+
+# ISC DHCP server
+#
+# message format:
+#   May 16 13:09:05 localhost dhcpd: DHCPDISCOVER from 00:19:99:ad:61:e2 via br0
+#   May 16 13:09:05 localhost dhcpd: DHCPOFFER on 10.174.26.108 to 00:19:99:ad:61:e2 via br0
+#   May 16 13:47:21 localhost dhcpd: DHCPREQUEST for 10.174.26.208 from 00:19:99:ad:61:e2 via br0
+#   May 16 13:47:21 localhost dhcpd: DHCPACK on 10.174.26.208 to 00:19:99:ad:61:e2 via br0
+#   May 16 13:21:17 localhost dhcpd: DHCPRELEASE of 10.174.26.108 from 00:19:99:ad:61:e2 via br0 (not found)
+rule=: %req-type:word% from %src-mac:word% via %src-if%
+rule=: %req-type:word% on %src-ip:ipv4% to %src-mac:word% via %src-if%
+rule=: %req-type:word% for %src-ip:ipv4% from %src-mac:word% via %src-if%
+rule=: %req-type:word% of %src-ip:ipv4% from %src-mac:word% via %src-if% (%src-hostname:char-to:)%)
+
+
