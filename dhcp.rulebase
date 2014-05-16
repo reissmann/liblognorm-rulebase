@@ -50,9 +50,9 @@ rule=: %req-type:char-to:(%(%src-if:char-to:)%) %src-ip:ipv4% %src-mac:word% %sr
 #   May 16 13:47:21 localhost dhcpd: DHCPREQUEST for 10.174.26.208 from 00:19:99:ad:61:e2 via br0
 #   May 16 13:47:21 localhost dhcpd: DHCPACK on 10.174.26.208 to 00:19:99:ad:61:e2 via br0
 #   May 16 13:21:17 localhost dhcpd: DHCPRELEASE of 10.174.26.108 from 00:19:99:ad:61:e2 via br0 (not found)
-rule=: %req-type:word% from %src-mac:word% via %src-if%
-rule=: %req-type:word% on %src-ip:ipv4% to %src-mac:word% via %src-if%
-rule=: %req-type:word% for %src-ip:ipv4% from %src-mac:word% via %src-if%
-rule=: %req-type:word% of %src-ip:ipv4% from %src-mac:word% via %src-if% (%src-hostname:char-to:)%)
+rule=: %req-type:word% from %src-mac:word% via %src-if:word%
+rule=: %req-type:word% on %src-ip:ipv4% to %src-mac:word% via %src-if:word%
+rule=: %req-type:word% for %src-ip:ipv4% from %src-mac:word% via %src-if:word%
+rule=: %req-type:word% of %src-ip:ipv4% from %src-mac:word% via %src-if:word% (%src-hostname:char-to:)%)
 
 
