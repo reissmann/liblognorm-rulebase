@@ -1,0 +1,42 @@
+# Copyright (c) 2014, Sven Reissmann <sven@0x80.io>
+# All rights reserved.
+#
+# This file is part of the liblognorm-rulebase project
+#
+# Redistribution and use in source and binary forms, with or without
+# modification, are permitted provided that the following conditions are met:
+#
+# * Redistributions of source code must retain the above copyright notice,
+#   this list of conditions and the following disclaimer.
+# * Redistributions in binary form must reproduce the above copyright notice,
+#   this list of conditions and the following disclaimer in the documentation
+#   and/or other materials provided with the distribution.
+# * Neither the name of the nor the names of its contributors may be used to
+#   endorse or promote products derived from this software without specific
+#   prior written permission.
+#
+# THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+# AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+# IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+# ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
+# LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+# CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+# SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+# INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+# CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+# ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+# POSSIBILITY OF SUCH DAMAGE.
+
+prefix=
+
+# xinetd / telnet.in
+#
+# message format:
+#   May 13 15:59:24 localhost login[10940]: FAILED LOGIN (1) on '/dev/pts/4' from 'localhost' FOR 'UNKNOWN', User not known to the underlying authentication module
+#   May 13 15:59:24 localhost login[10940]: FAILED LOGIN (2) on '/dev/pts/4' from 'localhost' FOR 'test', Authentication failure
+#   May 13 15:59:24 localhost xinetd[10763]: START: telnet pid=11851 from=127.0.0.1
+#   May 13 15:59:24 localhost xinetd[10763]: EXIT: telnet status=1 pid=10939 duration=71(sec)
+rule=: FAILED LOGIN (%seqnum:number%) on '%tty:char-to:'%' from '%src-hostname:char-to:'%' FOR '%username:char-to:'%', %-:rest%
+rule=: START: telnet pid=%pid:number% from=%src-ip:ipv4%"
+rule=: EXIT: telnet status=%status:number% pid=%pid:number% duration=%duration:number%(sec)
+
